@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.mcpserver.grpc";
+option java_outer_classname = "ToolServiceProto";
+
+package toolservice;
+
+// The Tool Service definition
+service ToolService {
+  // Lists all available tools
+  rpc ListTools (ListToolsRequest) returns (ListToolsResponse) {}
+  
+  // Executes a tool
+  rpc ExecuteTool (ExecuteToolRequest) returns (ExecuteToolResponse) {}
+}
+
+// Request message for listing tools
+message ListToolsRequest {
+  // Empty request
+}
+
+// Response message for listing tools
+message ListToolsResponse {
+  // Map of tool names to tool information
+  map<string, ToolInfo> tools = 1;
+}
+
+// Tool information
+message ToolInfo {
+  // Tool description
+  string description = 1;
+}
+
+// Request message for executing a tool
+message ExecuteToolRequest {
+  // Tool name to execute
+  string tool_name = 1;
+  // Parameters for the tool
+  map<string, string> parameters = 2;
+}
+
+// Response message for executing a tool
+message ExecuteToolResponse {
+  oneof result {
+    // Success response with tool results
+    ToolResult success = 1;
+    // Error response
+    ErrorInfo error = 2;
+  }
+}
+
+// Tool result
+message ToolResult {
+  // Map of result values
+  map<string, string> values = 1;
+}
+
+// Error information
+message ErrorInfo {
+  // Error message
+  string message = 1;
+} 
